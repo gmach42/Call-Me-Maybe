@@ -1,6 +1,6 @@
 import json
 import sys
-from .pydantic_models import FunctionDefinition, TestPrompt
+from .pydantic_models import FunctionDefinition, PromptModel
 
 
 def load_functions(path: str) -> list[FunctionDefinition]:
@@ -15,11 +15,11 @@ def load_functions(path: str) -> list[FunctionDefinition]:
         print(f"Error: invalid JSON in {path}: {e}", file=sys.stderr)
         sys.exit(1)
 
-def load_prompts(path: str) -> list[TestPrompt]:
+def load_prompts(path: str) -> list[PromptModel]:
     try:
         with open(path, "r") as f:
             data = json.load(f)
-        return [TestPrompt(**entry) for entry in data]
+        return [PromptModel(**entry) for entry in data]
     except FileNotFoundError:
         print(f"Error: functions file not found: {path}", file=sys.stderr)
         sys.exit(1)

@@ -5,7 +5,7 @@ from pathlib import Path
 
 class FunctionParameter(BaseModel):
     type: Literal["number", "string", "boolean"]
-    optional_description: str | None
+    optional_description: str | None = None
 
     @model_validator(mode='after')
     def type_must_be_known(cls, v: Literal["number", "string", "boolean"]) -> Literal["number", "string", "boolean"]:
@@ -18,7 +18,7 @@ class FunctionDefinition(BaseModel):
     returns: FunctionParameter
 
 
-class TestPrompt(BaseModel):
+class PromptModel(BaseModel):
     prompt: str
 
     @field_validator("prompt")
@@ -30,7 +30,7 @@ class TestPrompt(BaseModel):
         return v
 
 
-class OutputEntry(BaseModel):
+class OutputModel(BaseModel):
     prompt: str
     name: str
     parameters: dict[str, int | float | str | bool]
@@ -43,7 +43,7 @@ class OutputEntry(BaseModel):
 
 class PipelineConfig(BaseModel):
     functions: list[FunctionDefinition]
-    prompts: list[TestPrompt]
+    prompts: list[PromptModel]
     output_path: Path
 
     @model_validator(mode="after")
